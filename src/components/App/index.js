@@ -1,6 +1,8 @@
 import React, { useState, useReducer } from 'react';
 import * as S from './styles';
 import { getVenues, getSimilarVenues } from './services';
+import Search from '../Search';
+import Title from '../Title';
 // import { string } from 'prop-types';
 
 const App = () => {
@@ -47,12 +49,12 @@ const App = () => {
 
   const renderedSimilarVenues = similarVenues.map((similarVenue, i) => <div key={i}>{similarVenue.name}</div>);
 
-  const handleChange = (event) => {
+  const handleSearchChange = (event) => {
     const { name, value } = event.target;
     setUserInput({ [name]: value });
   };
 
-  const handleSubmit = (event) => {
+  const handleSearchSubmit = (event) => {
     console.log(userInput);
     loadVenues(userInput.name, userInput.clientId, userInput.clientSecret);
     event.preventDefault();
@@ -60,21 +62,8 @@ const App = () => {
 
   return (
     <S.Wrapper>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Foursquare API Client ID:
-          <input type="text" name="clientId" onChange={handleChange} value={userInput.clientId} />
-        </label>
-        <label>
-          Foursqaure API Client Secret:
-          <input type="text" name="clientSecret" onChange={handleChange} value={userInput.clientSecret} />
-        </label>
-        <label>
-          Restaurant name:
-          <input type="text" name="name" onChange={handleChange} value={userInput.name} />
-        </label>
-        <input type="submit" value="Submit" />
-      </form>
+      <Title />
+      <Search handleSubmit={handleSearchSubmit} handleChange={handleSearchChange} userInput={userInput} />
       <div>{venues.length === 0 ? 'No results for venues' : renderedVenues}</div>
       <div>{similarVenues.length === 0 ? 'No results for similar venues' : renderedSimilarVenues}</div>
     </S.Wrapper>
