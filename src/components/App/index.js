@@ -1,18 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useReducer } from 'react';
 import * as S from './styles';
 import { getVenues, getSimilarVenues } from './services';
 // import { string } from 'prop-types';
 
 const App = () => {
-  const [queryVenue, setQueryVenue] = useState({
+  const [userInput, setUserInput] = useReducer((state, newState) => ({ ...state, ...newState }), {
     name: '',
-    clientId: ''
+    clientId: '',
+    clientSecret: ''
   });
   const [venues, setVenues] = useState([]);
   const [similarVenues, setSimilarVenues] = useState([]);
-  const loadVenues = async (name) => {
+
+  const loadVenues = async (name, clientId, clientSecret) => {
     try {
-      const response = await getVenues(name);
+      const response = await getVenues(name, clientId, clientSecret);
       setVenues(response.data.response.venues);
     } catch (error) {
       console.log('error fetching venues');
@@ -23,7 +25,7 @@ const App = () => {
 
   const loadSimilarVenues = async (id) => {
     try {
-      const response = await getSimilarVenues(id);
+      const response = await getSimilarVenues(id, userInput.clientId, userInput.clientSecret);
       setSimilarVenues(response.data.response.similarVenues.items);
     } catch (error) {
       console.log('error fetching similar venues');
@@ -47,14 +49,12 @@ const App = () => {
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    setQueryVenue((prevState) => ({
-      ...prevState,
-      [name]: value
-    }));
+    setUserInput({ [name]: value });
   };
 
   const handleSubmit = (event) => {
-    loadVenues(queryVenue.name);
+    console.log(userInput);
+    loadVenues(userInput.name, userInput.clientId, userInput.clientSecret);
     event.preventDefault();
   };
 
@@ -62,12 +62,16 @@ const App = () => {
     <S.Wrapper>
       <form onSubmit={handleSubmit}>
         <label>
-          Restaurant name:
-          <input type="text" name="name" onChange={handleChange} value={queryVenue.name} />
+          Foursquare API Client ID:
+          <input type="text" name="clientId" onChange={handleChange} value={userInput.clientId} />
         </label>
         <label>
-          Foursqaure API Client ID:
-          <input type="text" name="clientId" onChange={handleChange} value={queryVenue.clientId} />
+          Foursqaure API Client Secret:
+          <input type="text" name="clientSecret" onChange={handleChange} value={userInput.clientSecret} />
+        </label>
+        <label>
+          Restaurant name:
+          <input type="text" name="name" onChange={handleChange} value={userInput.name} />
         </label>
         <input type="submit" value="Submit" />
       </form>
