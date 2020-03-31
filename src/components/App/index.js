@@ -1,8 +1,9 @@
 import React, { useState, useReducer } from 'react';
 import * as S from './styles';
 import { getVenues, getSimilarVenues } from './services';
-import Search from '../Search';
 import Title from '../Title';
+import Search from '../Search';
+import Graph from '../Graph';
 // import { string } from 'prop-types';
 
 const App = () => {
@@ -55,7 +56,6 @@ const App = () => {
   };
 
   const handleSearchSubmit = (event) => {
-    console.log(userInput);
     loadVenues(userInput.name, userInput.clientId, userInput.clientSecret);
     event.preventDefault();
   };
@@ -63,9 +63,12 @@ const App = () => {
   return (
     <S.Wrapper>
       <Title />
-      <Search handleSubmit={handleSearchSubmit} handleChange={handleSearchChange} userInput={userInput} />
-      <div>{venues.length === 0 ? 'No results for venues' : renderedVenues}</div>
-      <div>{similarVenues.length === 0 ? 'No results for similar venues' : renderedSimilarVenues}</div>
+      <S.Container>
+        <Search handleSubmit={handleSearchSubmit} handleChange={handleSearchChange} userInput={userInput} />
+        <div>{venues.length === 0 ? 'No results for venues' : renderedVenues}</div>
+        <div>{similarVenues.length === 0 ? 'No results for similar venues' : renderedSimilarVenues}</div>
+      </S.Container>
+      <Graph similarVenues={similarVenues} />
     </S.Wrapper>
   );
 };

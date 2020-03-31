@@ -8,11 +8,7 @@ export const Wrapper = styled.div`
 `;
 
 export const Title = styled.div`
-  font-size: 30px;
+  font-size: 20px;
   font-weight: bold;
-`;
-
-export const Subtitle = styled.div`
-  font-size: 18px;
-  font-weight: bold;
+  color: hotpink;
 `;
