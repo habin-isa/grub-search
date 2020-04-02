@@ -3,7 +3,7 @@ import * as S from './styles';
 import { getVenues, getSimilarVenues } from './services';
 import Title from '../Title';
 import Search from '../Search';
-import Graph from '../Graph';
+import GraphContainer from '../GraphContainer';
 // import { string } from 'prop-types';
 
 const App = () => {
@@ -65,10 +65,10 @@ const App = () => {
       <Title />
       <S.Container>
         <Search handleSubmit={handleSearchSubmit} handleChange={handleSearchChange} userInput={userInput} />
-        <div>{venues.length === 0 ? 'No results for venues' : renderedVenues}</div>
-        <div>{similarVenues.length === 0 ? 'No results for similar venues' : renderedSimilarVenues}</div>
+        <S.Venues>{venues.length === 0 ? 'No results for venues' : renderedVenues}</S.Venues>
+        <S.Venues>{similarVenues.length === 0 ? 'No results for similar venues' : renderedSimilarVenues}</S.Venues>
       </S.Container>
-      <Graph similarVenues={similarVenues} />
+      <GraphContainer similarVenues={similarVenues} />
     </S.Wrapper>
   );
 };
