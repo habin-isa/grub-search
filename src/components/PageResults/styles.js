@@ -4,7 +4,8 @@ export const Wrapper = styled.div`
   display: flex;
   width: 100%;
   padding: 50px;
-  height: 100vh;
+  // height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
 `;
 export const VenuesTitle = styled.div`
   font-size: 20px;
