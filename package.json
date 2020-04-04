@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@babel/helper-call-delegate": "^7.8.7",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
@@ -10,6 +11,7 @@
     "d3-require": "^1.2.4",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
+    "react-page-scroller": "^2.0.6-beta",
     "react-scripts": "3.4.0",
     "resize-observer-polyfill": "^1.5.1"
   },

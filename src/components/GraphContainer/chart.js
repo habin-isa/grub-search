@@ -6,7 +6,6 @@ export const renderChart = (data) => {
   const width = 600;
   const links = data.links.map((d) => Object.create(d));
   const nodes = data.nodes.map((d) => Object.create(d));
-  console.log('renderedChart run');
 
   const color = () => {
     const scale = d3.scaleOrdinal(d3.schemeCategory10);
@@ -82,6 +81,6 @@ export const renderChart = (data) => {
   });
 
   // invalidation.then(() => simulation.stop());
-  console.log(svg.node());
+  console.log('Wanted elements:', svg.node());
   return svg.node();
 };

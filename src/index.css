@@ -1,5 +1,16 @@
-@import url('https://fonts.googleapis.com/css?family=Ubuntu&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
 
 body {
-  font-family: 'Ubuntu', sans-serif;
+  font-family: 'Varela Round', sans-serif;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+  outline: none;
+}
+
+input {
+  font-family: 'Varela Round', sans-serif;
 }
