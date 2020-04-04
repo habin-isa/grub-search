@@ -1,20 +1,25 @@
 import React, { useState, useReducer } from 'react';
+import ReactPageScroller from 'react-page-scroller';
 import * as S from './styles';
 import { getVenues, getSimilarVenues } from './services';
-import Title from '../Title';
-import Search from '../Search';
-import Graph from '../Graph';
+import PageTitle from '../PageTitle';
+import PageSearch from '../PageSearch';
+import PageResults from '../PageResults';
 // import { string } from 'prop-types';
 
 const App = () => {
+  const [currentPage, setCurrentPage] = useState(null);
+  const [venues, setVenues] = useState([]);
+  const [similarVenues, setSimilarVenues] = useState([]);
   const [userInput, setUserInput] = useReducer((state, newState) => ({ ...state, ...newState }), {
     name: '',
     clientId: '',
     clientSecret: ''
   });
-  const [venues, setVenues] = useState([]);
-  const [similarVenues, setSimilarVenues] = useState([]);
 
+  const handlePageChange = (number) => {
+    setCurrentPage(number);
+  };
   const loadVenues = async (name, clientId, clientSecret) => {
     try {
       const response = await getVenues(name, clientId, clientSecret);
@@ -37,6 +42,8 @@ const App = () => {
     }
   };
 
+  const renderedSimilarVenues = similarVenues.map((similarVenue, i) => <div key={i}>{similarVenue.name}</div>);
+
   const renderedVenues = venues.map((venue, i) => (
     <div
       key={i}
@@ -48,8 +55,6 @@ const App = () => {
     </div>
   ));
 
-  const renderedSimilarVenues = similarVenues.map((similarVenue, i) => <div key={i}>{similarVenue.name}</div>);
-
   const handleSearchChange = (event) => {
     const { name, value } = event.target;
     setUserInput({ [name]: value });
@@ -57,18 +62,28 @@ const App = () => {
 
   const handleSearchSubmit = (event) => {
     loadVenues(userInput.name, userInput.clientId, userInput.clientSecret);
+    setCurrentPage(2);
     event.preventDefault();
   };
 
   return (
     <S.Wrapper>
-      <Title />
-      <S.Container>
-        <Search handleSubmit={handleSearchSubmit} handleChange={handleSearchChange} userInput={userInput} />
-        <div>{venues.length === 0 ? 'No results for venues' : renderedVenues}</div>
-        <div>{similarVenues.length === 0 ? 'No results for similar venues' : renderedSimilarVenues}</div>
-      </S.Container>
-      <Graph similarVenues={similarVenues} />
+      <React.Fragment>
+        <ReactPageScroller pageOnChange={handlePageChange} customPageNumber={currentPage}>
+          <PageTitle />
+          <PageSearch
+            handleSearchSubmit={handleSearchSubmit}
+            handleSearchChange={handleSearchChange}
+            userInput={userInput}
+          />
+          <PageResults
+            venues={venues}
+            renderedVenues={renderedVenues}
+            similarVenues={similarVenues}
+            renderedSimilarVenues={renderedSimilarVenues}
+          />
+        </ReactPageScroller>
+      </React.Fragment>
     </S.Wrapper>
   );
 };
