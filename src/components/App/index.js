@@ -5,7 +5,6 @@ import { getVenues, getSimilarVenues } from './services';
 import PageTitle from '../PageTitle';
 import PageSearch from '../PageSearch';
 import PageResults from '../PageResults';
-import { SimilarVenues } from '../PageResults/styles';
 // import { string } from 'prop-types';
 
 const App = () => {
