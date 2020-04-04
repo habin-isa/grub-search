@@ -53,6 +53,7 @@ const GraphContainer = ({ similarVenues }) => {
   return (
     <S.Wrapper>
       <div className="chartData"></div>
+      <div>This graph was created with d3</div>
     </S.Wrapper>
   );
 };

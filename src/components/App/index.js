@@ -16,16 +16,19 @@ const App = () => {
     clientId: '',
     clientSecret: ''
   });
+  const [inputError, showInputError] = useState(0);
 
   const handlePageChange = (number) => {
     setCurrentPage(number);
   };
+
   const loadVenues = async (name, clientId, clientSecret) => {
     try {
       const response = await getVenues(name, clientId, clientSecret);
       setVenues(response.data.response.venues);
     } catch (error) {
       console.log('error fetching venues');
+      showInputError(1);
     } finally {
       console.log('loadVenues called');
     }
@@ -62,7 +65,19 @@ const App = () => {
 
   const handleSearchSubmit = (event) => {
     loadVenues(userInput.name, userInput.clientId, userInput.clientSecret);
-    setCurrentPage(2);
+    if (inputError > 1) {
+      setCurrentPage(2);
+    } else {
+      setCurrentPage(1);
+    }
+
+    if (userInput.clientId === '' || userInput.clientSecret === '') {
+      showInputError(1);
+    } else if (userInput.name === '') {
+      showInputError(2);
+    } else {
+      showInputError(0);
+    }
     event.preventDefault();
   };
 
@@ -75,6 +90,7 @@ const App = () => {
             handleSearchSubmit={handleSearchSubmit}
             handleSearchChange={handleSearchChange}
             userInput={userInput}
+            inputError={inputError}
           />
           <PageResults
             venues={venues}

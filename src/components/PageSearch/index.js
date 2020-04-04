@@ -1,9 +1,9 @@
 import React from 'react';
 import * as S from './styles';
 import FoodIcon from './assets/spaghetti.png';
-import { array, func, obj } from 'prop-types';
+import { func, number } from 'prop-types';
 
-const PageSearch = ({ handleSearchSubmit, handleSearchChange, userInput }) => {
+const PageSearch = ({ handleSearchSubmit, handleSearchChange, userInput, inputError }) => {
   return (
     <S.Wrapper>
       <S.SearchContainer>
@@ -17,6 +17,13 @@ const PageSearch = ({ handleSearchSubmit, handleSearchChange, userInput }) => {
           Out of ideas? Why not search for <i>Grill</i> or <i>Coffee!</i>
         </S.Subtitle>
         <S.SearchWrapper onSubmit={handleSearchSubmit}>
+          {inputError === 1 ? (
+            <S.Error>Error with credentials</S.Error>
+          ) : inputError === 2 ? (
+            <S.Error>Please fill in all fields</S.Error>
+          ) : (
+            ''
+          )}
           <S.Label>
             Foursquare API Client ID:
             <S.Input type="text" name="clientId" onChange={handleSearchChange} value={userInput.clientId} />
@@ -44,13 +51,13 @@ const PageSearch = ({ handleSearchSubmit, handleSearchChange, userInput }) => {
 PageSearch.propTypes = {
   handleSearchSubmit: func,
   handleSearchChange: func,
-  userInput: obj
+  inputError: number
 };
 
 PageSearch.defaultProps = {
   handleSearchSubmit: () => {},
   handleSearchChange: () => {},
-  userInput: {}
+  inputError: 0
 };
 
 export default PageSearch;

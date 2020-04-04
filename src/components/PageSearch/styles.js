@@ -88,3 +88,10 @@ export const Submit = styled.input`
     cursor: pointer;
   }
 `;
+
+export const Error = styled.div`
+  font-size: 12px;
+  text-align: right;
+  padding: 5px;
+  color: red;
+`;

@@ -2,9 +2,9 @@ import styled from 'styled-components';
 
 export const Wrapper = styled.div`
   display: flex;
-  width: 100%;
+  width: 80%;
   margin: 50px;
-  height: 80vh;
+  // height: 80vh;
   // height: calc(var(--vh, 1vh) * 100);
 `;
 export const VenuesTitle = styled.div`
@@ -23,15 +23,15 @@ export const Venues = styled.div`
 
 export const SimilarVenuesTitle = styled.div`
   font-size: 20px;
-  color: #666464;
+  color: #938f8f;
   padding-right: 30px;
 `;
 
 export const SimilarVenues = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   width: 100%;
-  color: #666464;
+  color: #938f8f;
   padding-bottom: 30px;
 `;
 
@@ -39,5 +39,5 @@ export const Graph = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  width: 100%;
+  width: 80%;
 `;

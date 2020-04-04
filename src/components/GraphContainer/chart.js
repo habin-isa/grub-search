@@ -1,16 +1,15 @@
 import * as d3 from 'd3';
 
 export const renderChart = (data, graphDiv) => {
-  const height = 600;
-  const width = 600;
+  if (data === []) {
+    return null;
+  }
+  const height = 400;
+  const width = 400;
   const links = data.links.map((d) => Object.create(d));
   const nodes = data.nodes.map((d) => Object.create(d));
 
-  const color = () => {
-    const scale = d3.scaleOrdinal(d3.schemeCategory10);
-    console.log('puppi', (d) => scale(d.group));
-    return (d) => scale(d.group);
-  };
+  const color = d3.scaleOrdinal(d3.schemeCategory10);
 
   const simulation = d3
     .forceSimulation(nodes)
@@ -67,10 +66,21 @@ export const renderChart = (data, graphDiv) => {
     .data(nodes)
     .join('circle')
     .attr('r', 10)
-    .attr('fill', color)
+    .attr('fill', function(d) {
+      return color(d.group);
+    })
     .call(drag(simulation));
 
-  node.append('title').text((d) => d.id);
+  const texts = svg
+    .selectAll('.texts')
+    .data(nodes)
+    .enter()
+    .append('text')
+    .attr('dx', 12)
+    .attr('dy', '0.35em')
+    .text(function(d) {
+      return d.group;
+    });
 
   simulation.on('tick', () => {
     link
@@ -80,6 +90,14 @@ export const renderChart = (data, graphDiv) => {
       .attr('y2', (d) => d.target.y);
 
     node.attr('cx', (d) => d.x).attr('cy', (d) => d.y);
+
+    texts
+      .attr('x', function(d) {
+        return d.x;
+      })
+      .attr('y', function(d) {
+        return d.y;
+      });
   });
 
   // invalidation.then(() => simulation.stop());

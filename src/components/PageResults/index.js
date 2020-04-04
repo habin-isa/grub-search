@@ -1,7 +1,7 @@
 import React from 'react';
 import * as S from './styles';
 import GraphContainer from '../GraphContainer';
-import { array, func } from 'prop-types';
+import { array } from 'prop-types';
 
 const PageResults = ({ venues, renderedVenues, similarVenues, renderedSimilarVenues }) => {
   return (
@@ -10,14 +10,10 @@ const PageResults = ({ venues, renderedVenues, similarVenues, renderedSimilarVen
         <S.VenuesTitle>Please select one venue to see similar spots</S.VenuesTitle>
         {venues.length === 0 ? '0 Results' : renderedVenues}
       </S.Venues>
-      {/* <S.SimilarVenues>
-        <S.SimilarVenuesTitle>Details of similar venues:</S.SimilarVenuesTitle>
-        <S.Venues>{similarVenues.length === 0 ? 'No results for similar venues' : renderedSimilarVenues}</S.Venues>
-      </S.SimilarVenues> */}
       <S.Graph>
         {' '}
         <S.SimilarVenues>
-          <S.SimilarVenuesTitle>Details of similar venues:</S.SimilarVenuesTitle>
+          <S.SimilarVenuesTitle>Similar venues:</S.SimilarVenuesTitle>
           <S.Venues>{similarVenues.length === 0 ? 'No results for similar venues' : renderedSimilarVenues}</S.Venues>
         </S.SimilarVenues>{' '}
         <GraphContainer similarVenues={similarVenues} />
@@ -28,16 +24,16 @@ const PageResults = ({ venues, renderedVenues, similarVenues, renderedSimilarVen
 
 PageResults.propTypes = {
   venues: array,
-  renderedVenues: func,
+  renderedVenues: array,
   similarVenues: array,
-  renderedSimilarVenues: func
+  renderedSimilarVenues: array
 };
 
 PageResults.defaultProps = {
   venues: [],
-  renderedVenues: () => {},
+  renderedVenues: [],
   similarVenues: [],
-  renderedSimilarVenues: () => {}
+  renderedSimilarVenues: []
 };
 
 export default PageResults;
