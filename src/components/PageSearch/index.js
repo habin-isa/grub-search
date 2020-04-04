@@ -1,8 +1,7 @@
 import React from 'react';
 import * as S from './styles';
 import FoodIcon from './assets/spaghetti.png';
-// import GraphContainer from '../GraphContainer';
-// import { string } from 'prop-types';
+import { array, func, obj } from 'prop-types';
 
 const PageSearch = ({ handleSearchSubmit, handleSearchChange, userInput }) => {
   return (
@@ -15,9 +14,8 @@ const PageSearch = ({ handleSearchSubmit, handleSearchChange, userInput }) => {
             here.
           </S.Link>
           <br />
-          Out of ideas? Why not search for Grill or Coffee!
+          Out of ideas? Why not search for <i>Grill</i> or <i>Coffee!</i>
         </S.Subtitle>
-        {/* <Search handleSubmit={handleSearchSubmit} handleChange={handleSearchChange} userInput={userInput} /> */}
         <S.SearchWrapper onSubmit={handleSearchSubmit}>
           <S.Label>
             Foursquare API Client ID:
@@ -39,21 +37,20 @@ const PageSearch = ({ handleSearchSubmit, handleSearchChange, userInput }) => {
       <S.IconContainer>
         <S.Icon src={FoodIcon} alt="food-icon" />
       </S.IconContainer>
-      {/* <GraphContainer similarVenues={similarVenues} /> */}
     </S.Wrapper>
   );
 };
 
+PageSearch.propTypes = {
+  handleSearchSubmit: func,
+  handleSearchChange: func,
+  userInput: obj
+};
+
+PageSearch.defaultProps = {
+  handleSearchSubmit: () => {},
+  handleSearchChange: () => {},
+  userInput: {}
+};
+
 export default PageSearch;
-
-// If props were drilled into App component
-// E.g. const App = ({ propName, propTwo })
-
-// App.propTypes = {
-//   propName: string,
-//   propTwo: string.isRequired
-// };
-
-// App.defaultProps = {
-//   propName: 'Kimmy'
-// };

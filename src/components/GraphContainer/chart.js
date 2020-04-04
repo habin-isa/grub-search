@@ -1,7 +1,6 @@
 import * as d3 from 'd3';
-import * as d3Require from 'd3-require';
 
-export const renderChart = (data) => {
+export const renderChart = (data, graphDiv) => {
   const height = 600;
   const width = 600;
   const links = data.links.map((d) => Object.create(d));
@@ -9,6 +8,7 @@ export const renderChart = (data) => {
 
   const color = () => {
     const scale = d3.scaleOrdinal(d3.schemeCategory10);
+    console.log('puppi', (d) => scale(d.group));
     return (d) => scale(d.group);
   };
 
@@ -18,6 +18,7 @@ export const renderChart = (data) => {
       'link',
       d3.forceLink(links).id((d) => d.id)
     )
+    .force('link', d3.forceLink(links).distance(100))
     .force('charge', d3.forceManyBody())
     .force('center', d3.forceCenter(width / 2, height / 2));
 
@@ -46,7 +47,7 @@ export const renderChart = (data) => {
       .on('end', dragended);
   };
 
-  const svg = d3.create('svg').attr('viewBox', [0, 0, width, height]);
+  const svg = graphDiv.append('svg').attr('viewBox', [0, 0, width, height]);
 
   const link = svg
     .append('g')
@@ -55,7 +56,8 @@ export const renderChart = (data) => {
     .selectAll('line')
     .data(links)
     .join('line')
-    .attr('strokeWidth', (d) => Math.sqrt(d.value));
+    // .attr('strokeWidth', (d) => Math.sqrt(d.value));
+    .attr('strokeWidth', 500);
 
   const node = svg
     .append('g')
@@ -64,7 +66,7 @@ export const renderChart = (data) => {
     .selectAll('circle')
     .data(nodes)
     .join('circle')
-    .attr('r', 5)
+    .attr('r', 10)
     .attr('fill', color)
     .call(drag(simulation));
 
@@ -81,6 +83,6 @@ export const renderChart = (data) => {
   });
 
   // invalidation.then(() => simulation.stop());
-  console.log('Wanted elements:', svg.node());
+  console.log('Wanted elements:', svg);
   return svg.node();
 };

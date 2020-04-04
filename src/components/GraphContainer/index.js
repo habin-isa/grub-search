@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-// , { useEffect, useState, useReducer }
+import React, { useState, useEffect, createRef } from 'react';
 import * as S from './styles';
 import { renderChart } from './chart';
 import * as d3 from 'd3';
@@ -13,6 +12,8 @@ const GraphContainer = ({ similarVenues }) => {
     nodes: [],
     links: []
   };
+
+  const chartInput = createRef();
 
   useEffect(
     () => {
@@ -39,7 +40,9 @@ const GraphContainer = ({ similarVenues }) => {
             });
           }
           setLinks(data.links);
-          renderChart(data);
+
+          const chartData = renderChart(data, d3.select('.chartData'));
+          console.log('renderChart: ', chartData);
         }
       }
     },
@@ -49,7 +52,7 @@ const GraphContainer = ({ similarVenues }) => {
 
   return (
     <S.Wrapper>
-      <S.Title>Graph Container</S.Title>
+      <div className="chartData"></div>
     </S.Wrapper>
   );
 };
