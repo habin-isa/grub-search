@@ -1,0 +1,96 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PageSearch component should render 1`] = `
+<div
+  class="sc-AxjAm cAfKVR"
+>
+  <div
+    class="sc-AxirZ fTDDfI"
+  >
+    <div
+      class="sc-AxiKw evJipK"
+    >
+      Search for a restaurant or a category for your grub
+    </div>
+    <div
+      class="sc-AxhCb dlLDwE"
+    >
+      To access the FourSquare API, create a developer account and obtain client credentials (ID and secret), from
+       
+      <a
+        class="sc-AxhUy iDIzqx"
+        href="https://developer.foursquare.com/docs/places-api/"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        here.
+      </a>
+      <br />
+      Out of ideas? Why not search for 
+      <i>
+        Grill
+      </i>
+       or 
+      <i>
+        Coffee!
+      </i>
+    </div>
+    <form
+      class="sc-Axmtr hZhPkX"
+    >
+      
+      <label
+        class="sc-AxmLO fEFzgM"
+      >
+        Foursquare API Client ID:
+        <input
+          class="sc-fzozJi fewFLE"
+          name="clientId"
+          type="text"
+          value="123213"
+        />
+      </label>
+      <label
+        class="sc-AxmLO fEFzgM"
+      >
+        Foursqaure API Client Secret:
+        <input
+          class="sc-fzozJi fewFLE"
+          name="clientSecret"
+          type="text"
+          value="123213"
+        />
+      </label>
+      <label
+        class="sc-AxmLO fEFzgM"
+      >
+        Restaurant name:
+        <input
+          class="sc-fzozJi fewFLE"
+          name="name"
+          type="text"
+          value="Kim"
+        />
+      </label>
+      <div
+        class="sc-fzoLsD lnvcMU"
+      >
+        <input
+          class="sc-fzpans ckUvuc"
+          type="submit"
+          value="Submit"
+        />
+      </div>
+    </form>
+  </div>
+  <div
+    class="sc-AxheI iulBeS"
+  >
+    <img
+      alt="food-icon"
+      class="sc-AxgMl iZoIAo"
+      src="spaghetti.png"
+    />
+  </div>
+</div>
+`;

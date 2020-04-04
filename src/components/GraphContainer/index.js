@@ -17,6 +17,7 @@ const GraphContainer = ({ similarVenues }) => {
 
   useEffect(
     () => {
+      console.log(similarVenues);
       d3Require.require('d3@5');
       if (similarVenues.length > 0) {
         {
@@ -53,7 +54,6 @@ const GraphContainer = ({ similarVenues }) => {
   return (
     <S.Wrapper>
       <div className="chartData"></div>
-      <div>This graph was created with d3</div>
     </S.Wrapper>
   );
 };

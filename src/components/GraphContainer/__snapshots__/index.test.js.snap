@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GraphContainer should render 1`] = `
+<div
+  class="sc-AxjAm iIQfHV"
+>
+  <div
+    class="chartData"
+  >
+    <svg
+      viewBox="0,0,400,400"
+    >
+      <g
+        stroke="#999"
+        strokeOpacity="0.6"
+      >
+        <line
+          strokeWidth="500"
+        />
+        <line
+          strokeWidth="500"
+        />
+      </g>
+      <g
+        stroke="#fff"
+        strokeWidth="1.5"
+      >
+        <circle
+          fill="#1f77b4"
+          r="10"
+        />
+        <circle
+          fill="#1f77b4"
+          r="10"
+        />
+        <circle
+          fill="#1f77b4"
+          r="10"
+        />
+      </g>
+      <text
+        dx="12"
+        dy="0.35em"
+      />
+      <text
+        dx="12"
+        dy="0.35em"
+      />
+      <text
+        dx="12"
+        dy="0.35em"
+      />
+    </svg>
+  </div>
+</div>
+`;

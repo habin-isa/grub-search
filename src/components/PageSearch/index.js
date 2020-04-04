@@ -17,13 +17,7 @@ const PageSearch = ({ handleSearchSubmit, handleSearchChange, userInput, inputEr
           Out of ideas? Why not search for <i>Grill</i> or <i>Coffee!</i>
         </S.Subtitle>
         <S.SearchWrapper onSubmit={handleSearchSubmit}>
-          {inputError === 1 ? (
-            <S.Error>Error with credentials</S.Error>
-          ) : inputError === 2 ? (
-            <S.Error>Please fill in all fields</S.Error>
-          ) : (
-            ''
-          )}
+          {inputError === 1 ? <S.Error>Error with credentials</S.Error> : ''}
           <S.Label>
             Foursquare API Client ID:
             <S.Input type="text" name="clientId" onChange={handleSearchChange} value={userInput.clientId} />

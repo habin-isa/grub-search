@@ -5,7 +5,6 @@ import { getVenues, getSimilarVenues } from './services';
 import PageTitle from '../PageTitle';
 import PageSearch from '../PageSearch';
 import PageResults from '../PageResults';
-// import { string } from 'prop-types';
 
 const App = () => {
   const [currentPage, setCurrentPage] = useState(null);
@@ -29,6 +28,7 @@ const App = () => {
     } catch (error) {
       console.log('error fetching venues');
       showInputError(1);
+      setCurrentPage(1);
     } finally {
       console.log('loadVenues called');
     }
@@ -65,17 +65,8 @@ const App = () => {
 
   const handleSearchSubmit = (event) => {
     loadVenues(userInput.name, userInput.clientId, userInput.clientSecret);
-    if (inputError > 1) {
+    if (userInput.clientId !== '' && userInput.clientSecret !== '' && userInput.name !== '') {
       setCurrentPage(2);
-    } else {
-      setCurrentPage(1);
-    }
-
-    if (userInput.clientId === '' || userInput.clientSecret === '') {
-      showInputError(1);
-    } else if (userInput.name === '') {
-      showInputError(2);
-    } else {
       showInputError(0);
     }
     event.preventDefault();
@@ -105,15 +96,3 @@ const App = () => {
 };
 
 export default App;
-
-// If props were drilled into App component
-// E.g. const App = ({ propName, propTwo })
-
-// App.propTypes = {
-//   propName: string,
-//   propTwo: string.isRequired
-// };
-
-// App.defaultProps = {
-//   propName: 'Kimmy'
-// };

@@ -1,9 +1,8 @@
 import * as d3 from 'd3';
 
 export const renderChart = (data, graphDiv) => {
-  if (data === []) {
-    return null;
-  }
+  console.log('puppi', data);
+
   const height = 400;
   const width = 400;
   const links = data.links.map((d) => Object.create(d));
@@ -20,6 +19,10 @@ export const renderChart = (data, graphDiv) => {
     .force('link', d3.forceLink(links).distance(100))
     .force('charge', d3.forceManyBody())
     .force('center', d3.forceCenter(width / 2, height / 2));
+
+  if (data === []) {
+    simulation.alpha(0.5).restart();
+  }
 
   const drag = (simulation) => {
     const dragstarted = (d) => {
@@ -55,7 +58,6 @@ export const renderChart = (data, graphDiv) => {
     .selectAll('line')
     .data(links)
     .join('line')
-    // .attr('strokeWidth', (d) => Math.sqrt(d.value));
     .attr('strokeWidth', 500);
 
   const node = svg
@@ -101,6 +103,9 @@ export const renderChart = (data, graphDiv) => {
   });
 
   // invalidation.then(() => simulation.stop());
-  console.log('Wanted elements:', svg);
   return svg.node();
+  // if (data === []) {
+  //   return null;
+  // } else {
+  // }
 };
