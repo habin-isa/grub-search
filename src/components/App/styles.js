@@ -10,3 +10,7 @@ export const Container = styled.div`
   width: 100%;
   justify-content: space-between;
 `;
+
+export const Venues = styled.div`
+  font-size: 10px;
+`;

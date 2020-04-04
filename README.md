@@ -9,7 +9,11 @@
 - \$ git clone https://github.com/habin-isa/grub-search.git
 - \$ cd grub-search
 - \$ yarn
-- \$ yarn start
+- \$ yarn run dev
+
+--- Temp .env:
+ClientID: XDV5S2RADLC32ECWCUJAQ03C1MJTMBGDJ0IAVNWOPAJ1TFDE
+ClientSecret: 15SRCBBB2PKLBZ122MHUVY1DL4IMC4CG3DFCODZWIC0L40TU
 
 ### Tech
 
@@ -19,3 +23,4 @@
 - Jest
 - Axios
 - Babel/EsLint
+- React-page-scroller
