@@ -1,10 +1,11 @@
 import React, { useState, useEffect, createRef } from 'react';
 import * as S from './styles';
-import { renderChart, modifiedChart } from './chart';
+import { modifiedChart } from './chart';
 import * as d3 from 'd3';
 import * as d3Require from 'd3-require';
+import { array, number } from 'prop-types';
 
-const GraphContainer = ({ similarVenues }) => {
+const GraphContainer = ({ similarVenues, stopChart }) => {
   const [nodes, setNodes] = useState([]);
   const [links, setLinks] = useState([]);
 
@@ -17,7 +18,6 @@ const GraphContainer = ({ similarVenues }) => {
 
   useEffect(
     () => {
-      console.log('similarVenues', similarVenues);
       const myNode = document.getElementById('chartId');
       myNode.innerHTML = '';
       d3Require.require('d3@5');
@@ -33,6 +33,7 @@ const GraphContainer = ({ similarVenues }) => {
             });
           });
           setNodes(data.nodes);
+          console.log({ nodes });
         }
         const length = data.nodes.length;
         if (length > 1) {
@@ -44,10 +45,8 @@ const GraphContainer = ({ similarVenues }) => {
             });
           }
           setLinks(data.links);
-          const chartData = renderChart(data, d3.select('.chartData'));
-          // const chartData = modifiedChart(data, d3.select('.chartData'));
-
-          console.log('renderChart: ', chartData);
+          console.log({ links });
+          const chartData = modifiedChart(data, d3.select('.chartData'), stopChart);
         }
       }
     },
@@ -60,6 +59,16 @@ const GraphContainer = ({ similarVenues }) => {
       <div id="chartId" className="chartData"></div>
     </S.Wrapper>
   );
+};
+
+GraphContainer.propTypes = {
+  similarVenues: array,
+  stopChart: number
+};
+
+GraphContainer.defaultProps = {
+  similarVenues: [],
+  stopChart: 0
 };
 
 export default GraphContainer;

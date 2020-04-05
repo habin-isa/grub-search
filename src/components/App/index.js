@@ -1,4 +1,4 @@
-import React, { useState, useReducer } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import ReactPageScroller from 'react-page-scroller';
 import * as S from './styles';
 import { getVenues, getSimilarVenues } from './services';
@@ -16,6 +16,7 @@ const App = () => {
     clientSecret: ''
   });
   const [inputError, showInputError] = useState(0);
+  const [stopChart, setStopChart] = useState(0);
 
   const handlePageChange = (number) => {
     setCurrentPage(number);
@@ -72,6 +73,14 @@ const App = () => {
     event.preventDefault();
   };
 
+  useEffect(() => {
+    document.body.onkeyup = (e) => {
+      if (e.keyCode === 32) {
+        setStopChart(1);
+      }
+    };
+  });
+
   return (
     <S.Wrapper>
       <React.Fragment>
@@ -88,6 +97,7 @@ const App = () => {
             renderedVenues={renderedVenues}
             similarVenues={similarVenues}
             renderedSimilarVenues={renderedSimilarVenues}
+            stopChart={stopChart}
           />
         </ReactPageScroller>
       </React.Fragment>
