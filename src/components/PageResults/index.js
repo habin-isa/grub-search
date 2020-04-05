@@ -15,6 +15,13 @@ const PageResults = ({ venues, renderedVenues, similarVenues, renderedSimilarVen
         <S.SimilarVenues>
           <S.SimilarVenuesTitle>Similar venues:</S.SimilarVenuesTitle>
           <S.Venues>{similarVenues.length === 0 ? 'No results for similar venues' : renderedSimilarVenues}</S.Venues>
+          <S.Venues>
+            {similarVenues.length === 1
+              ? 'Only 1 similar venue'
+              : similarVenues.length > 1
+              ? 'Graph powered by d3'
+              : ''}
+          </S.Venues>
         </S.SimilarVenues>{' '}
         <GraphContainer similarVenues={similarVenues} />
       </S.Graph>

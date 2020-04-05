@@ -1,6 +1,6 @@
 import React, { useState, useEffect, createRef } from 'react';
 import * as S from './styles';
-import { renderChart } from './chart';
+import { renderChart, modifiedChart } from './chart';
 import * as d3 from 'd3';
 import * as d3Require from 'd3-require';
 
@@ -17,8 +17,11 @@ const GraphContainer = ({ similarVenues }) => {
 
   useEffect(
     () => {
-      console.log(similarVenues);
+      console.log('similarVenues', similarVenues);
+      const myNode = document.getElementById('chartId');
+      myNode.innerHTML = '';
       d3Require.require('d3@5');
+
       if (similarVenues.length > 0) {
         {
           similarVenues.map((venue, i) => {
@@ -41,8 +44,9 @@ const GraphContainer = ({ similarVenues }) => {
             });
           }
           setLinks(data.links);
-
           const chartData = renderChart(data, d3.select('.chartData'));
+          // const chartData = modifiedChart(data, d3.select('.chartData'));
+
           console.log('renderChart: ', chartData);
         }
       }
@@ -53,7 +57,7 @@ const GraphContainer = ({ similarVenues }) => {
 
   return (
     <S.Wrapper>
-      <div className="chartData"></div>
+      <div id="chartId" className="chartData"></div>
     </S.Wrapper>
   );
 };
