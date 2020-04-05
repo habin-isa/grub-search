@@ -1,12 +1,10 @@
 import * as d3 from 'd3';
-// import Promises from 'react';
 
 export const renderChart = (data, graphDiv) => {
   const height = 400;
   const width = 400;
   const links = data.links.map((d) => Object.create(d));
   const nodes = data.nodes.map((d) => Object.create(d));
-  console.log('puppi', links);
 
   const color = d3.scaleOrdinal(d3.schemeCategory10);
 
@@ -111,18 +109,14 @@ export const renderChart = (data, graphDiv) => {
   return svg.node();
 };
 
-export const modifiedChart = (data, graphDiv) => {
-  const width = 300;
-  const height = 300;
-  const svg = d3.create('svg').attr('viewBox', [0, 0, width, height]);
-
+export const modifiedChart = (data, graphDiv, stopChart) => {
+  const height = 400;
+  const width = 400;
+  const svg = graphDiv.append('svg').attr('viewBox', [0, 0, width, height]);
   const color = d3.scaleOrdinal(d3.schemeCategory10);
 
-  var a = { id: 'a' },
-    b = { id: 'b' },
-    c = { id: 'c' },
-    nodes = [a, b, c],
-    links = [];
+  const nodes = [];
+  const links = [];
 
   var simulation = d3
     .forceSimulation(nodes)
@@ -148,32 +142,26 @@ export const modifiedChart = (data, graphDiv) => {
   restart();
 
   d3.timeout(function() {
-    links.push({ source: a, target: b }); // Add a-b.
-    links.push({ source: b, target: c }); // Add b-c.
-    links.push({ source: c, target: a }); // Add c-a.
-    restart();
+    if (nodes.length === 0) {
+      nodes.push(data.nodes[0], data.nodes[1]);
+      links.push({ source: data.nodes[0], target: data.nodes[1] });
+      restart();
+    }
   }, 1000);
 
   d3.interval(
     function() {
-      nodes.pop(); // Remove c.
-      links.pop(); // Remove c-a.
-      links.pop(); // Remove b-c.
-      restart();
+      const nodeLength = nodes.length;
+      if (data.nodes.length !== nodeLength) {
+        if (stopChart !== 1) {
+          nodes.push(data.nodes[nodeLength]);
+          links.push({ source: data.nodes[nodeLength - 1], target: data.nodes[nodeLength] });
+        }
+        restart();
+      }
     },
     2000,
     d3.now()
-  );
-
-  d3.interval(
-    function() {
-      nodes.push(c); // Re-add c.
-      links.push({ source: b, target: c }); // Re-add b-c.
-      links.push({ source: c, target: a }); // Re-add c-a.
-      restart();
-    },
-    2000,
-    d3.now() + 1000
   );
 
   function restart() {
@@ -181,24 +169,62 @@ export const modifiedChart = (data, graphDiv) => {
     node = node.data(nodes, function(d) {
       return d.id;
     });
-    node.exit().remove();
+
+    node
+      .exit()
+      .transition()
+      .attr('r', 0)
+      .remove();
+
     node = node
       .enter()
       .append('circle')
       .attr('fill', function(d) {
         return color(d.id);
       })
-      .attr('r', 8)
+      .call(function(node) {
+        node.transition().attr('r', 8);
+      })
       .merge(node);
 
     // Apply the general update pattern to the links.
     link = link.data(links, function(d) {
       return d.source.id + '-' + d.target.id;
     });
-    link.exit().remove();
+
+    // Keep the exiting links connected to the moving remaining nodes.
+    link
+      .exit()
+      .transition()
+      .attr('stroke-opacity', 0)
+      .attrTween('x1', function(d) {
+        return function() {
+          return d.source.x;
+        };
+      })
+      .attrTween('x2', function(d) {
+        return function() {
+          return d.target.x;
+        };
+      })
+      .attrTween('y1', function(d) {
+        return function() {
+          return d.source.y;
+        };
+      })
+      .attrTween('y2', function(d) {
+        return function() {
+          return d.target.y;
+        };
+      })
+      .remove();
+
     link = link
       .enter()
       .append('line')
+      .call(function(link) {
+        link.transition().attr('stroke-opacity', 1);
+      })
       .merge(link);
 
     // Update and restart the simulation.
@@ -229,6 +255,14 @@ export const modifiedChart = (data, graphDiv) => {
       .attr('y2', function(d) {
         return d.target.y;
       });
+
+    // texts
+    //   .attr('x', function(d) {
+    //     return d.x;
+    //   })
+    //   .attr('y', function(d) {
+    //     return d.y;
+    //   });
   }
 
   return svg.node();

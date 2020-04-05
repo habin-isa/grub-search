@@ -28,6 +28,11 @@ exports[`PageResults component should render 1`] = `
       <div
         class="sc-AxiKw jOUsNA"
       />
+      <div
+        class="sc-AxiKw jOUsNA"
+      >
+        Graph powered by d3
+      </div>
     </div>
      
     <div
@@ -35,50 +40,23 @@ exports[`PageResults component should render 1`] = `
     >
       <div
         class="chartData"
+        id="chartId"
       >
         <svg
           viewBox="0,0,400,400"
         >
           <g
-            stroke="#999"
-            strokeOpacity="0.6"
+            transform="translate(200,200)"
           >
-            <line
-              strokeWidth="500"
+            <g
+              stroke="#000"
+              stroke-width="1.5"
             />
-            <line
-              strokeWidth="500"
+            <g
+              stroke="#fff"
+              stroke-width="1.5"
             />
           </g>
-          <g
-            stroke="#fff"
-            strokeWidth="1.5"
-          >
-            <circle
-              fill="#1f77b4"
-              r="10"
-            />
-            <circle
-              fill="#1f77b4"
-              r="10"
-            />
-            <circle
-              fill="#1f77b4"
-              r="10"
-            />
-          </g>
-          <text
-            dx="12"
-            dy="0.35em"
-          />
-          <text
-            dx="12"
-            dy="0.35em"
-          />
-          <text
-            dx="12"
-            dy="0.35em"
-          />
         </svg>
       </div>
     </div>

@@ -16,7 +16,8 @@ describe('PageResults component', () => {
       { id: 'Costa', group: '1' }
     ],
     renderedVenues: [],
-    renderedSimilarVenues: []
+    renderedSimilarVenues: [],
+    stopChart: 0
   };
   it('should render', () => {
     const { container } = render(<PageResults {...props} />);

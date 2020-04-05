@@ -9,7 +9,8 @@ describe('GraphContainer', () => {
       { id: 'Costa', group: '1' },
       { id: 'Costa', group: '1' },
       { id: 'Costa', group: '1' }
-    ]
+    ],
+    stopChart: 0
   };
   it('should render', () => {
     const { container } = render(<GraphContainer {...props} />);

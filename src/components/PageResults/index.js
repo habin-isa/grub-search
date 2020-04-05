@@ -1,9 +1,9 @@
 import React from 'react';
 import * as S from './styles';
 import GraphContainer from '../GraphContainer';
-import { array } from 'prop-types';
+import { array, number } from 'prop-types';
 
-const PageResults = ({ venues, renderedVenues, similarVenues, renderedSimilarVenues }) => {
+const PageResults = ({ venues, renderedVenues, similarVenues, renderedSimilarVenues, stopChart }) => {
   return (
     <S.Wrapper>
       <S.Venues>
@@ -33,14 +33,16 @@ PageResults.propTypes = {
   venues: array,
   renderedVenues: array,
   similarVenues: array,
-  renderedSimilarVenues: array
+  renderedSimilarVenues: array,
+  stopChart: number
 };
 
 PageResults.defaultProps = {
   venues: [],
   renderedVenues: [],
   similarVenues: [],
-  renderedSimilarVenues: []
+  renderedSimilarVenues: [],
+  stopChart: 0
 };
 
 export default PageResults;
