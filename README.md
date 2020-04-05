@@ -30,6 +30,11 @@ To get access to the Foursquare API you need to create a developer account. Foll
 - Create an app (your app URL can be localhost)
 - Obtain your client ID and secret
 
+### Example FourSquare details
+
+- ClientID: XDV5S2RADLC32ECWCUJAQ03C1MJTMBGDJ0IAVNWOPAJ1TFDE
+- ClientSecret: 15SRCBBB2PKLBZ122MHUVY1DL4IMC4CG3DFCODZWIC0L40TU
+
 ![alt text](/src/assets/graph-preview.png 'Graph Preview')
 
 ### Tech
