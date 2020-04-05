@@ -6,6 +6,7 @@
 - A user can enter FourSquare API credentials and a venue or category search
 - A list of venues matching that search are returned
 - The user can click on a venue to load a list of similar venues, and see the network of similar venues in a force graph
+- The graph will populate over time, on key down of space bar the render will stop
 
 ![alt text](/src/assets/project-preview.png 'Preview')
 
@@ -28,11 +29,6 @@ To get access to the Foursquare API you need to create a developer account. Foll
 - Sign up
 - Create an app (your app URL can be localhost)
 - Obtain your client ID and secret
-
-### Example FourSquare details
-
-- ClientID: XDV5S2RADLC32ECWCUJAQ03C1MJTMBGDJ0IAVNWOPAJ1TFDE
-- ClientSecret: 15SRCBBB2PKLBZ122MHUVY1DL4IMC4CG3DFCODZWIC0L40TU
 
 ![alt text](/src/assets/graph-preview.png 'Graph Preview')
 
