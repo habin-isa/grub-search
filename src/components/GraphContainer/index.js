@@ -5,7 +5,7 @@ import * as d3 from 'd3';
 import * as d3Require from 'd3-require';
 import { array, number } from 'prop-types';
 
-const GraphContainer = ({ similarVenues, stopChart }) => {
+const GraphContainer = ({ similarVenues, stopChart, seedVenue }) => {
   const [nodes, setNodes] = useState([]);
   const [links, setLinks] = useState([]);
 
@@ -23,6 +23,12 @@ const GraphContainer = ({ similarVenues, stopChart }) => {
       d3Require.require('d3@5');
 
       if (similarVenues.length > 0) {
+        data.nodes.push({
+          id: seedVenue.name,
+          group: seedVenue.name,
+          key: seedVenue.id,
+          size: 20
+        });
         {
           similarVenues.map((venue, i) => {
             data.nodes.push({
@@ -39,7 +45,7 @@ const GraphContainer = ({ similarVenues, stopChart }) => {
         if (length > 1) {
           for (var i = 1; i < length; i++) {
             data.links.push({
-              source: data.nodes[i - 1].id,
+              source: data.nodes[0].id,
               target: data.nodes[i].id,
               value: 3
             });
@@ -56,7 +62,7 @@ const GraphContainer = ({ similarVenues, stopChart }) => {
 
   return (
     <S.Wrapper>
-      <div id="chartId" className="chartData"></div>
+      <div id="chartId" className="chartData" />
     </S.Wrapper>
   );
 };

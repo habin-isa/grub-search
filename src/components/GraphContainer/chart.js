@@ -46,7 +46,8 @@ export const modifiedChart = (data, graphDiv, stopChart) => {
       if (data.nodes.length !== nodeLength) {
         if (stopChart !== 1) {
           nodes.push(data.nodes[nodeLength]);
-          links.push({ source: data.nodes[nodeLength - 1], target: data.nodes[nodeLength] });
+          links.push({ source: data.nodes[0], target: data.nodes[nodeLength] });
+          // debugger;
         }
         restart();
       }
@@ -148,13 +149,15 @@ export const modifiedChart = (data, graphDiv, stopChart) => {
       });
 
     // texts
-    //   .attr('x', function(d) {
-    //     return d.x;
-    //   })
-    //   .attr('y', function(d) {
-    //     return d.y;
-    //   });
+    // 	.attr('x', function(d) {
+    // 		return d.x;
+    // 	})
+    // 	.attr('y', function(d) {
+    // 		return d.y;
+    // 	});
   }
+  // console.log('puppi nodes', nodes);
+  // console.log('puppi links', links);
 
   return svg.node();
 };

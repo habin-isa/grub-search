@@ -3,7 +3,7 @@ import * as S from './styles';
 import GraphContainer from '../GraphContainer';
 import { array, number } from 'prop-types';
 
-const PageResults = ({ venues, renderedVenues, similarVenues, renderedSimilarVenues, stopChart }) => {
+const PageResults = ({ venues, renderedVenues, similarVenues, renderedSimilarVenues, stopChart, seedVenue }) => {
   return (
     <S.Wrapper>
       <S.Venues>
@@ -23,7 +23,7 @@ const PageResults = ({ venues, renderedVenues, similarVenues, renderedSimilarVen
               : ''}
           </S.Venues>
         </S.SimilarVenues>{' '}
-        <GraphContainer similarVenues={similarVenues} />
+        <GraphContainer similarVenues={similarVenues} seedVenue={seedVenue} />
       </S.Graph>
     </S.Wrapper>
   );

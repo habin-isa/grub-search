@@ -10,6 +10,7 @@ const App = () => {
   const [currentPage, setCurrentPage] = useState(null);
   const [venues, setVenues] = useState([]);
   const [similarVenues, setSimilarVenues] = useState([]);
+  const [seedVenue, setSeedVenue] = useState();
   const [userInput, setUserInput] = useReducer((state, newState) => ({ ...state, ...newState }), {
     name: '',
     clientId: '',
@@ -38,6 +39,7 @@ const App = () => {
   const loadSimilarVenues = async (id) => {
     try {
       const response = await getSimilarVenues(id, userInput.clientId, userInput.clientSecret);
+      console.log('getSimilarVenues res:', response);
       setSimilarVenues(response.data.response.similarVenues.items);
     } catch (error) {
       console.log('error fetching similar venues');
@@ -53,6 +55,7 @@ const App = () => {
       key={i}
       onClick={() => {
         loadSimilarVenues(venue.id);
+        setSeedVenue(venue);
       }}
     >
       {venue.name}
@@ -93,6 +96,7 @@ const App = () => {
             inputError={inputError}
           />
           <PageResults
+            seedVenue={seedVenue}
             venues={venues}
             renderedVenues={renderedVenues}
             similarVenues={similarVenues}
