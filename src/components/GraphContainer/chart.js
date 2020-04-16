@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 
-export const modifiedChart = (data, graphDiv, stopChart) => {
+export const modifiedChart = (sortedData, data, newVenuesLength, graphDiv) => {
   const height = 400;
   const width = 400;
   const svg = graphDiv.append('svg').attr('viewBox', [0, 0, width, height]);
@@ -9,12 +9,17 @@ export const modifiedChart = (data, graphDiv, stopChart) => {
   const nodes = [];
   const links = [];
 
+  console.log('puppi 1', data);
+  console.log('newVenuesLength', newVenuesLength);
+  console.log('sortedData in chart', sortedData);
+
   var simulation = d3
     .forceSimulation(nodes)
-    .force('charge', d3.forceManyBody().strength(-1000))
-    .force('link', d3.forceLink(links).distance(200))
-    .force('x', d3.forceX())
-    .force('y', d3.forceY())
+    // .force('charge', d3.forceManyBody())
+    // .force('charge', d3.forceManyBody().strength(50))
+    .force('link', d3.forceLink(links).distance(50))
+    // .force('x', d3.forceX())
+    // .force('y', d3.forceY())
     .alphaTarget(1)
     .on('tick', ticked);
 
@@ -34,25 +39,30 @@ export const modifiedChart = (data, graphDiv, stopChart) => {
 
   d3.timeout(function() {
     if (nodes.length === 0) {
-      nodes.push(data.nodes[0], data.nodes[1]);
-      links.push({ source: data.nodes[0], target: data.nodes[1] });
+      nodes.push(data.nodes[0]);
+      links.push({ source: data.nodes[0], target: data.nodes[0] });
       restart();
     }
   }, 1000);
 
+  // pushes each new node from data.nodes
+  // pushes each new link from data.links
   d3.interval(
     function() {
-      const nodeLength = nodes.length;
-      if (data.nodes.length !== nodeLength) {
-        if (stopChart !== 1) {
-          nodes.push(data.nodes[nodeLength]);
-          links.push({ source: data.nodes[0], target: data.nodes[nodeLength] });
-          // debugger;
+      const marker = data.nodes.length - newVenuesLength;
+      if (nodes.length !== data.nodes.length) {
+        for (var i = 0; i < data.nodes.length; i++) {
+          nodes.push(data.nodes[i]);
+          if (i < marker) {
+            links.push({ source: data.nodes[0], target: data.nodes[i] });
+          } else {
+            links.push({ source: data.nodes[1], target: data.nodes[i] });
+          }
         }
-        restart();
       }
+      restart();
     },
-    2000,
+    3000,
     d3.now()
   );
 
@@ -147,6 +157,7 @@ export const modifiedChart = (data, graphDiv, stopChart) => {
       .attr('y2', function(d) {
         return d.target.y;
       });
+    simulation.stop();
 
     // texts
     // 	.attr('x', function(d) {
@@ -158,6 +169,5 @@ export const modifiedChart = (data, graphDiv, stopChart) => {
   }
   // console.log('puppi nodes', nodes);
   // console.log('puppi links', links);
-
   return svg.node();
 };

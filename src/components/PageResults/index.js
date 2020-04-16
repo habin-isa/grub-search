@@ -1,9 +1,17 @@
 import React from 'react';
 import * as S from './styles';
 import GraphContainer from '../GraphContainer';
-import { array, number } from 'prop-types';
+import { array, number, object } from 'prop-types';
 
-const PageResults = ({ venues, renderedVenues, similarVenues, renderedSimilarVenues, stopChart, seedVenue }) => {
+const PageResults = ({
+  venues,
+  renderedVenues,
+  similarVenues,
+  renderedSimilarVenues,
+  seedVenue,
+  newVenues,
+  sortedData
+}) => {
   return (
     <S.Wrapper>
       <S.Venues>
@@ -23,7 +31,12 @@ const PageResults = ({ venues, renderedVenues, similarVenues, renderedSimilarVen
               : ''}
           </S.Venues>
         </S.SimilarVenues>{' '}
-        <GraphContainer similarVenues={similarVenues} seedVenue={seedVenue} />
+        <GraphContainer
+          similarVenues={similarVenues}
+          seedVenue={seedVenue}
+          newVenues={newVenues}
+          sortedData={sortedData}
+        />
       </S.Graph>
     </S.Wrapper>
   );
@@ -34,7 +47,8 @@ PageResults.propTypes = {
   renderedVenues: array,
   similarVenues: array,
   renderedSimilarVenues: array,
-  stopChart: number
+  stopChart: number,
+  sortedData: object
 };
 
 PageResults.defaultProps = {
@@ -42,7 +56,8 @@ PageResults.defaultProps = {
   renderedVenues: [],
   similarVenues: [],
   renderedSimilarVenues: [],
-  stopChart: 0
+  stopChart: 0,
+  sortedData: {}
 };
 
 export default PageResults;

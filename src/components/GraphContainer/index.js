@@ -3,18 +3,17 @@ import * as S from './styles';
 import { modifiedChart } from './chart';
 import * as d3 from 'd3';
 import * as d3Require from 'd3-require';
-import { array, number } from 'prop-types';
+import { array, number, object } from 'prop-types';
 
-const GraphContainer = ({ similarVenues, stopChart, seedVenue }) => {
-  const [nodes, setNodes] = useState([]);
-  const [links, setLinks] = useState([]);
-
+const GraphContainer = ({ similarVenues, stopChart, seedVenue, newVenues, sortedData }) => {
   const data = {
     nodes: [],
     links: []
   };
-
   const chartInput = createRef();
+
+  const totalVenues = similarVenues.concat(newVenues);
+  const newVenuesLength = newVenues.length;
 
   useEffect(
     () => {
@@ -22,42 +21,41 @@ const GraphContainer = ({ similarVenues, stopChart, seedVenue }) => {
       myNode.innerHTML = '';
       d3Require.require('d3@5');
 
-      if (similarVenues.length > 0) {
+      if (totalVenues.length > 0) {
         data.nodes.push({
           id: seedVenue.name,
-          group: seedVenue.name,
-          key: seedVenue.id,
-          size: 20
+          group: 0
         });
         {
-          similarVenues.map((venue, i) => {
+          totalVenues.map((venue, i) => {
             data.nodes.push({
               id: venue.name,
-              group: venue.name,
-              key: venue.id,
-              size: 20
+              group: i + 1
             });
           });
-          setNodes(data.nodes);
-          console.log({ nodes });
         }
-        const length = data.nodes.length;
-        if (length > 1) {
-          for (var i = 1; i < length; i++) {
-            data.links.push({
-              source: data.nodes[0].id,
-              target: data.nodes[i].id,
-              value: 3
-            });
-          }
-          setLinks(data.links);
-          console.log({ links });
-          const chartData = modifiedChart(data, d3.select('.chartData'), stopChart);
+
+        const datalength = similarVenues.length + 1;
+        for (var i = 0; i < datalength; i++) {
+          data.links.push({
+            source: data.nodes[0].id,
+            target: data.nodes[i].id,
+            value: 3
+          });
         }
+        for (var i = datalength + 1; i < data.nodes.length; i++) {
+          data.links.push({
+            source: data.nodes[1].id,
+            target: data.nodes[i].id,
+            value: 3
+          });
+        }
+
+        const chartData = modifiedChart(sortedData, data, newVenuesLength, d3.select('.chartData'));
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [similarVenues]
+    [totalVenues]
   );
 
   return (
@@ -69,12 +67,14 @@ const GraphContainer = ({ similarVenues, stopChart, seedVenue }) => {
 
 GraphContainer.propTypes = {
   similarVenues: array,
-  stopChart: number
+  stopChart: number,
+  sortedData: object
 };
 
 GraphContainer.defaultProps = {
   similarVenues: [],
-  stopChart: 0
+  stopChart: 0,
+  sortedData: {}
 };
 
 export default GraphContainer;
