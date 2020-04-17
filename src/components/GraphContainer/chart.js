@@ -77,12 +77,6 @@ export const modifiedChart = (initialData, graphDiv) => {
     restart();
   }, 7000);
 
-  // d3.interval(function() {
-  // 	if (stopChart === 1) {
-  // 		simulation.stop();
-  // 	}
-  // }, 500);
-
   function restart() {
     // Apply the general update pattern to the nodes.
     node = node.data(nodes, function(d) {
@@ -101,6 +95,8 @@ export const modifiedChart = (initialData, graphDiv) => {
       .attr('fill', function(d) {
         return color(d.id);
       })
+      .attr('dx', 12)
+      .attr('dy', '.35em')
       .call(function(node) {
         node.transition().attr('r', 8);
       })
@@ -201,14 +197,6 @@ export const modifiedChart = (initialData, graphDiv) => {
         return d.target.y;
       });
     simulation.stop();
-
-    // texts
-    // 	.attr('x', function(d) {
-    // 		return d.x;
-    // 	})
-    // 	.attr('y', function(d) {
-    // 		return d.y;
-    // 	});
   }
   return svg.node();
 };

@@ -2,49 +2,44 @@
 
 exports[`PageResults component should render 1`] = `
 <div
-  class="sc-AxjAm jeUiOQ"
+  class="sc-AxjAm gfkTed"
 >
   <div
-    class="sc-AxiKw japXaF"
+    class="sc-AxiKw jOUsNA"
   >
     <div
-      class="sc-AxirZ kmVcRa"
+      class="sc-AxirZ epZuHH"
     >
       Please select one venue to see similar spots
     </div>
   </div>
   <div
-    class="sc-AxgMl bjTzeo"
+    class="sc-AxgMl ihzjTA"
   >
      
     <div
-      class="sc-AxhUy kAkPsA"
+      class="sc-AxhUy gHEPPx"
     >
       <div
-        class="sc-AxhCb bzuDAQ"
+        class="sc-AxhCb jCFzct"
       >
         Similar venues:
       </div>
       <div
-        class="sc-AxiKw japXaF"
+        class="sc-AxiKw jOUsNA"
       >
         Click venue to render similar places
       </div>
       <div
-        class="sc-AxiKw japXaF"
-      >
-        Space bar to stop render
-      </div>
-      <div
-        class="sc-Axmtr ejesQE"
+        class="sc-Axmtr iwfHgE"
       >
         <div
-          class="sc-AxiKw japXaF"
+          class="sc-AxiKw jOUsNA"
         >
           Graph powered by d3
         </div>
         <div
-          class="sc-AxheI fOWUsf"
+          class="sc-AxheI hAikpb"
         >
           Click any node to keep expanding graph
         </div>

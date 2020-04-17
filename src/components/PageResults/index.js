@@ -19,7 +19,7 @@ const PageResults = ({ venues, renderedVenues, initialData, stopChart }) => {
               ? 'Click venue to render similar places'
               : initialData.firstResponse.map((venue, i) => <div key={i}>{venue.id}</div>)}
           </S.Venues>
-          <S.Venues>{stopChart === 1 ? 'Render stopped' : 'Space bar to stop render'}</S.Venues>
+          {/* <S.Venues>{stopChart === 1 ? 'Render stopped' : 'Space bar to stop render'}</S.Venues> */}
           <S.Box>
             <S.Venues>Graph powered by d3</S.Venues>
             <S.Subtitle>Click any node to keep expanding graph</S.Subtitle>
