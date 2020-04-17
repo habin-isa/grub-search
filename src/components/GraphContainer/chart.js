@@ -34,19 +34,39 @@ export const modifiedChart = (initialData, graphDiv) => {
   restart();
 
   d3.timeout(function() {
-    // push all initialData.nodes into nodes array
-    // push initialData.firstResponse links into links array
+    // push first node
+    // create invisible link for first node
     if (nodes.length === 0 && initialData.secondResponse !== undefined) {
       nodes.push(initialData.seed[0]);
+      links.push({
+        source: nodes[0],
+        target: nodes[0]
+      });
+    }
+    restart();
+  }, 1000);
+
+  d3.timeout(function() {
+    // push first response nodes
+    // push first response links (nodes[0] -> first response nodes)
+    if (initialData.firstResponse !== undefined) {
       {
         initialData.firstResponse.map((venue) => {
           nodes.push(venue);
           links.push({
-            source: initialData.seed[0],
+            source: nodes[0],
             target: venue
           });
         });
       }
+    }
+    restart();
+  }, 3000);
+
+  d3.timeout(function() {
+    // push second response nodes
+    // push second response links (first response nodes [i] -> second response nodes)
+    if (initialData.secondResponse !== undefined) {
       {
         initialData.secondResponse.map((group, index) => {
           for (var i = 0; i < group.length; i++) {
@@ -62,7 +82,38 @@ export const modifiedChart = (initialData, graphDiv) => {
       }
     }
     restart();
-  }, 1000);
+  }, 5000);
+
+  // d3.timeout(function() {
+  // 	// push all initialData.nodes into nodes array
+  // 	// push initialData.firstResponse links into links array
+  // 	if (nodes.length === 0 && initialData.secondResponse !== undefined) {
+  // 		nodes.push(initialData.seed[0]);
+  // 		{
+  // 			initialData.firstResponse.map((venue) => {
+  // 				nodes.push(venue);
+  // 				links.push({
+  // 					source: initialData.seed[0],
+  // 					target: venue
+  // 				});
+  // 			});
+  // 		}
+  // 		{
+  // 			initialData.secondResponse.map((group, index) => {
+  // 				for (var i = 0; i < group.length; i++) {
+  // 					nodes.push(group[i]);
+  // 				}
+  // 				group.map((venue) => {
+  // 					links.push({
+  // 						source: initialData.firstResponse[index],
+  // 						target: venue
+  // 					});
+  // 				});
+  // 			});
+  // 		}
+  // 	}
+  // 	restart();
+  // }, 1000);
 
   function restart() {
     // Apply the general update pattern to the nodes.
