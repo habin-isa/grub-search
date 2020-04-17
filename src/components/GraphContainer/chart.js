@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 
-export const modifiedChart = (sortedData, data, newVenuesLength, graphDiv) => {
+export const modifiedChart = (initialData, graphDiv) => {
   const height = 400;
   const width = 400;
   const svg = graphDiv.append('svg').attr('viewBox', [0, 0, width, height]);
@@ -9,15 +9,11 @@ export const modifiedChart = (sortedData, data, newVenuesLength, graphDiv) => {
   const nodes = [];
   const links = [];
 
-  console.log('puppi 1', data);
-  console.log('newVenuesLength', newVenuesLength);
-  console.log('sortedData in chart', sortedData);
-
   var simulation = d3
     .forceSimulation(nodes)
-    // .force('charge', d3.forceManyBody())
+    .force('charge', d3.forceManyBody())
     // .force('charge', d3.forceManyBody().strength(50))
-    .force('link', d3.forceLink(links).distance(50))
+    .force('link', d3.forceLink(links).distance(150))
     // .force('x', d3.forceX())
     // .force('y', d3.forceY())
     .alphaTarget(1)
@@ -38,33 +34,35 @@ export const modifiedChart = (sortedData, data, newVenuesLength, graphDiv) => {
   restart();
 
   d3.timeout(function() {
-    if (nodes.length === 0) {
-      nodes.push(data.nodes[0]);
-      links.push({ source: data.nodes[0], target: data.nodes[0] });
-      restart();
-    }
-  }, 1000);
-
-  // pushes each new node from data.nodes
-  // pushes each new link from data.links
-  d3.interval(
-    function() {
-      const marker = data.nodes.length - newVenuesLength;
-      if (nodes.length !== data.nodes.length) {
-        for (var i = 0; i < data.nodes.length; i++) {
-          nodes.push(data.nodes[i]);
-          if (i < marker) {
-            links.push({ source: data.nodes[0], target: data.nodes[i] });
-          } else {
-            links.push({ source: data.nodes[1], target: data.nodes[i] });
-          }
-        }
+    // push all initialData.nodes into nodes array
+    // push initialData.firstResponse links into links array
+    if (nodes.length === 0 && initialData.secondResponse !== undefined) {
+      nodes.push(initialData.seed[0]);
+      {
+        initialData.firstResponse.map((venue) => {
+          nodes.push(venue);
+          links.push({
+            source: initialData.seed[0],
+            target: venue
+          });
+        });
       }
-      restart();
-    },
-    3000,
-    d3.now()
-  );
+      {
+        initialData.secondResponse.map((group, index) => {
+          for (var i = 0; i < group.length; i++) {
+            nodes.push(group[i]);
+          }
+          group.map((venue) => {
+            links.push({
+              source: initialData.firstResponse[index],
+              target: venue
+            });
+          });
+        });
+      }
+    }
+    restart();
+  }, 1000);
 
   function restart() {
     // Apply the general update pattern to the nodes.
@@ -131,6 +129,8 @@ export const modifiedChart = (sortedData, data, newVenuesLength, graphDiv) => {
 
     // Update and restart the simulation.
     simulation.nodes(nodes);
+    // console.log('simulation nodes', nodes);
+    // console.log('simulation links', links);
     simulation.force('link').links(links);
     simulation.alpha(1).restart();
   }

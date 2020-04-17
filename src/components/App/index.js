@@ -9,7 +9,6 @@ import PageResults from '../PageResults';
 const App = () => {
   const [currentPage, setCurrentPage] = useState(null);
   const [venues, setVenues] = useState([]);
-  const [similarVenues, setSimilarVenues] = useState([]);
   const [seedVenue, setSeedVenue] = useState();
   const [newVenues, setNewVenues] = useState([]);
   const [userInput, setUserInput] = useReducer((state, newState) => ({ ...state, ...newState }), {
@@ -20,12 +19,17 @@ const App = () => {
   const [inputError, showInputError] = useState(0);
   const [stopChart, setStopChart] = useState(0);
   const [sortedData, setSortedData] = useState();
+  const [initialData, setInitialData] = useState();
   const newData = {
     nodes: [],
     links: []
   };
 
-  const topNodes = [];
+  const topNodes = {
+    seed: [],
+    firstResponse: [],
+    secondResponse: []
+  };
 
   const handlePageChange = (number) => {
     setCurrentPage(number);
@@ -45,64 +49,60 @@ const App = () => {
   };
 
   const loadSimilarVenues = async (venue) => {
-    // pushes first venue
-    topNodes.push({
+    // pushes seed venue into topNodes.seed
+    topNodes.seed.push({
       id: venue.name,
       venueId: venue.id
     });
 
-    // calls getSimilar venue, pushes first response
-    const rawFirstResponse = await getSimilarVenues(venue.id, userInput.clientId, userInput.clientSecret);
+    // calls getSimilar venue (A), response gives B and C
+    // push first response into topNodes.firstResponse
+    const rawFirstResponse = await getSimilarVenues(
+      topNodes.seed[0].venueId,
+      userInput.clientId,
+      userInput.clientSecret
+    );
     const firstResponse = rawFirstResponse.data.response.similarVenues.items;
+
     {
-      firstResponse.map((venue, i) => {
-        topNodes.push({
+      firstResponse.map((venue) => {
+        topNodes.firstResponse.push({
           id: venue.name,
           venueId: venue.id
         });
       });
     }
-    setSimilarVenues(firstResponse);
 
-    // push links for first response
-    for (var i = 1; i < topNodes.length; i++) {
+    // pushes links for seed -> firstResponse nodes
+    // doesn't need to be fed to chart
+    for (var i = 0; i < topNodes.firstResponse.length; i++) {
       newData.links.push({
-        source: venue.name,
-        target: topNodes[i].id
+        source: topNodes.seed[0],
+        target: topNodes.firstResponse[i]
       });
     }
+    // setSimilarVenues(topNodes.firstResponse);
 
-    console.log('newData after 1st response', newData);
-
-    for (i = 1; i < firstResponse.length + 1; i++) {
-      // calls second response
-      const similarVenueId = topNodes[i].venueId;
-      const startVenue = topNodes[i].id;
-      const rawSecondResponse = await getSimilarVenues(similarVenueId, userInput.clientId, userInput.clientSecret);
+    for (var k = 0; k < topNodes.firstResponse.length; k++) {
+      const rawSecondResponse = await getSimilarVenues(
+        topNodes.firstResponse[k].venueId,
+        userInput.clientId,
+        userInput.clientSecret
+      );
       const secondResponse = rawSecondResponse.data.response.similarVenues.items;
-
+      const res = [];
       {
-        secondResponse.map((venue, i) => {
-          topNodes.push({
+        secondResponse.map((venue) => {
+          res.push({
             id: venue.name,
             venueId: venue.id
           });
-          newData.links.push({
-            source: startVenue,
-            target: venue.name
-          });
         });
       }
-
-      console.log('topNodes', topNodes);
+      topNodes.secondResponse.push(res);
     }
-    const flatNodes = topNodes.flat();
-    newData.nodes = flatNodes;
-    setSortedData(newData);
-    console.log('newData after 2nd response', newData);
+    setInitialData(topNodes);
   };
-
-  const renderedSimilarVenues = similarVenues.map((similarVenue, i) => <div key={i}>{similarVenue.name}</div>);
 
   const renderedVenues = venues.map((venue, i) => (
     <div
@@ -153,11 +153,10 @@ const App = () => {
             seedVenue={seedVenue}
             venues={venues}
             renderedVenues={renderedVenues}
-            similarVenues={similarVenues}
-            renderedSimilarVenues={renderedSimilarVenues}
             stopChart={stopChart}
             newVenues={newVenues.flat()}
             sortedData={sortedData}
+            initialData={initialData}
           />
         </ReactPageScroller>
       </React.Fragment>
