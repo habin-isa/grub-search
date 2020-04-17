@@ -1,9 +1,9 @@
 import React from 'react';
 import * as S from './styles';
 import GraphContainer from '../GraphContainer';
-import { array, object } from 'prop-types';
+import { array, object, number } from 'prop-types';
 
-const PageResults = ({ venues, renderedVenues, initialData }) => {
+const PageResults = ({ venues, renderedVenues, initialData, stopChart }) => {
   return (
     <S.Wrapper>
       <S.Venues>
@@ -16,12 +16,16 @@ const PageResults = ({ venues, renderedVenues, initialData }) => {
           <S.SimilarVenuesTitle>Similar venues:</S.SimilarVenuesTitle>
           <S.Venues>
             {initialData.firstResponse === undefined
-              ? 'No results for similar venues'
+              ? 'Click venue to render similar places'
               : initialData.firstResponse.map((venue, i) => <div key={i}>{venue.id}</div>)}
           </S.Venues>
-          <S.Venues>Graph powered by d3</S.Venues>
+          <S.Venues>{stopChart === 1 ? 'Render stopped' : 'Space bar to stop render'}</S.Venues>
+          <S.Box>
+            <S.Venues>Graph powered by d3</S.Venues>
+            <S.Subtitle>Click any node to keep expanding graph</S.Subtitle>
+          </S.Box>
         </S.SimilarVenues>{' '}
-        <GraphContainer initialData={initialData} />
+        <GraphContainer initialData={initialData} stopChart={stopChart} />
       </S.Graph>
     </S.Wrapper>
   );
@@ -30,13 +34,15 @@ const PageResults = ({ venues, renderedVenues, initialData }) => {
 PageResults.propTypes = {
   venues: array,
   renderedVenues: array,
-  initialData: object
+  initialData: object,
+  stopChart: number
 };
 
 PageResults.defaultProps = {
   venues: [],
   renderedVenues: [],
-  initialData: {}
+  initialData: {},
+  stopChart: 0
 };
 
 export default PageResults;

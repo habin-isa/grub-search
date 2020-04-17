@@ -4,8 +4,6 @@ export const Wrapper = styled.div`
   display: flex;
   width: 80%;
   margin: 50px;
-  // height: 80vh;
-  // height: calc(var(--vh, 1vh) * 100);
 `;
 export const VenuesTitle = styled.div`
   font-size: 20px;
@@ -40,4 +38,20 @@ export const Graph = styled.div`
   flex-direction: column;
   align-items: flex-start;
   width: 80%;
+`;
+
+export const Subtitle = styled.div`
+  display: flex;
+  flex-direction: column;
+  font-size: 18px;
+  color: #fa9629;
+  font-weight: bold;
+  padding-top: 5px;
+`;
+
+export const Box = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  cursor: none;
 `;

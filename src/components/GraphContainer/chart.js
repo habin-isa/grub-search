@@ -1,8 +1,8 @@
 import * as d3 from 'd3';
 
 export const modifiedChart = (initialData, graphDiv) => {
-  const height = 400;
-  const width = 400;
+  const height = 500;
+  const width = 500;
   const svg = graphDiv.append('svg').attr('viewBox', [0, 0, width, height]);
   const color = d3.scaleOrdinal(d3.schemeCategory10);
 
@@ -12,10 +12,7 @@ export const modifiedChart = (initialData, graphDiv) => {
   var simulation = d3
     .forceSimulation(nodes)
     .force('charge', d3.forceManyBody())
-    // .force('charge', d3.forceManyBody().strength(50))
-    .force('link', d3.forceLink(links).distance(150))
-    // .force('x', d3.forceX())
-    // .force('y', d3.forceY())
+    .force('link', d3.forceLink(links))
     .alphaTarget(1)
     .on('tick', ticked);
 
@@ -50,70 +47,41 @@ export const modifiedChart = (initialData, graphDiv) => {
     // push first response nodes
     // push first response links (nodes[0] -> first response nodes)
     if (initialData.firstResponse !== undefined) {
-      {
-        initialData.firstResponse.map((venue) => {
-          nodes.push(venue);
-          links.push({
-            source: nodes[0],
-            target: venue
-          });
+      initialData.firstResponse.forEach((venue) => {
+        nodes.push(venue);
+        links.push({
+          source: nodes[0],
+          target: venue
         });
-      }
+      });
     }
     restart();
-  }, 3000);
+  }, 4000);
 
   d3.timeout(function() {
     // push second response nodes
     // push second response links (first response nodes [i] -> second response nodes)
     if (initialData.secondResponse !== undefined) {
-      {
-        initialData.secondResponse.map((group, index) => {
-          for (var i = 0; i < group.length; i++) {
-            nodes.push(group[i]);
-          }
-          group.map((venue) => {
-            links.push({
-              source: initialData.firstResponse[index],
-              target: venue
-            });
+      initialData.secondResponse.forEach((group, index) => {
+        for (var i = 0; i < group.length; i++) {
+          nodes.push(group[i]);
+        }
+        group.forEach((venue) => {
+          links.push({
+            source: initialData.firstResponse[index],
+            target: venue
           });
         });
-      }
+      });
     }
     restart();
-  }, 5000);
+  }, 7000);
 
-  // d3.timeout(function() {
-  // 	// push all initialData.nodes into nodes array
-  // 	// push initialData.firstResponse links into links array
-  // 	if (nodes.length === 0 && initialData.secondResponse !== undefined) {
-  // 		nodes.push(initialData.seed[0]);
-  // 		{
-  // 			initialData.firstResponse.map((venue) => {
-  // 				nodes.push(venue);
-  // 				links.push({
-  // 					source: initialData.seed[0],
-  // 					target: venue
-  // 				});
-  // 			});
-  // 		}
-  // 		{
-  // 			initialData.secondResponse.map((group, index) => {
-  // 				for (var i = 0; i < group.length; i++) {
-  // 					nodes.push(group[i]);
-  // 				}
-  // 				group.map((venue) => {
-  // 					links.push({
-  // 						source: initialData.firstResponse[index],
-  // 						target: venue
-  // 					});
-  // 				});
-  // 			});
-  // 		}
+  // d3.interval(function() {
+  // 	if (stopChart === 1) {
+  // 		simulation.stop();
   // 	}
-  // 	restart();
-  // }, 1000);
+  // }, 500);
 
   function restart() {
     // Apply the general update pattern to the nodes.
@@ -136,6 +104,7 @@ export const modifiedChart = (initialData, graphDiv) => {
       .call(function(node) {
         node.transition().attr('r', 8);
       })
+      .call(drag(simulation))
       .merge(node);
 
     // Apply the general update pattern to the links.
@@ -180,10 +149,33 @@ export const modifiedChart = (initialData, graphDiv) => {
 
     // Update and restart the simulation.
     simulation.nodes(nodes);
-    // console.log('simulation nodes', nodes);
-    // console.log('simulation links', links);
     simulation.force('link').links(links);
     simulation.alpha(1).restart();
+  }
+
+  function drag(simulation) {
+    function dragstarted(d) {
+      if (!d3.event.active) simulation.alphaTarget(0.1).restart();
+      d.fx = d.x;
+      d.fy = d.y;
+    }
+
+    function dragged(d) {
+      d.fx = d3.event.x;
+      d.fy = d3.event.y;
+    }
+
+    function dragended(d) {
+      if (!d3.event.active) simulation.alphaTarget(0);
+      d.fx = null;
+      d.fy = null;
+    }
+
+    return d3
+      .drag()
+      .on('start', dragstarted)
+      .on('drag', dragged)
+      .on('end', dragended);
   }
 
   function ticked() {
@@ -218,7 +210,5 @@ export const modifiedChart = (initialData, graphDiv) => {
     // 		return d.y;
     // 	});
   }
-  // console.log('puppi nodes', nodes);
-  // console.log('puppi links', links);
   return svg.node();
 };

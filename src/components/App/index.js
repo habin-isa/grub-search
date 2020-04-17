@@ -10,15 +10,13 @@ const App = () => {
   const [currentPage, setCurrentPage] = useState(null);
   const [venues, setVenues] = useState([]);
   const [seedVenue, setSeedVenue] = useState();
-  const [newVenues, setNewVenues] = useState([]);
+  const [stopChart, setStopChart] = useState(0);
   const [userInput, setUserInput] = useReducer((state, newState) => ({ ...state, ...newState }), {
     name: '',
     clientId: '',
     clientSecret: ''
   });
   const [inputError, showInputError] = useState(0);
-  const [stopChart, setStopChart] = useState(0);
-  const [sortedData, setSortedData] = useState();
   const [initialData, setInitialData] = useState();
   const newData = {
     nodes: [],
@@ -64,14 +62,12 @@ const App = () => {
     );
     const firstResponse = rawFirstResponse.data.response.similarVenues.items;
 
-    {
-      firstResponse.map((venue) => {
-        topNodes.firstResponse.push({
-          id: venue.name,
-          venueId: venue.id
-        });
+    firstResponse.forEach((venue) => {
+      topNodes.firstResponse.push({
+        id: venue.name,
+        venueId: venue.id
       });
-    }
+    });
 
     // pushes links for seed -> firstResponse nodes
     // doesn't need to be fed to chart
@@ -91,14 +87,14 @@ const App = () => {
       );
       const secondResponse = rawSecondResponse.data.response.similarVenues.items;
       const res = [];
-      {
-        secondResponse.map((venue) => {
-          res.push({
-            id: venue.name,
-            venueId: venue.id
-          });
+
+      secondResponse.forEach((venue) => {
+        res.push({
+          id: venue.name,
+          venueId: venue.id
         });
-      }
+      });
+
       topNodes.secondResponse.push(res);
     }
     setInitialData(topNodes);
@@ -110,6 +106,7 @@ const App = () => {
       onClick={() => {
         loadSimilarVenues(venue);
         setSeedVenue(venue);
+        setStopChart(0);
       }}
     >
       {venue.name}
@@ -153,10 +150,8 @@ const App = () => {
             seedVenue={seedVenue}
             venues={venues}
             renderedVenues={renderedVenues}
-            stopChart={stopChart}
-            newVenues={newVenues.flat()}
-            sortedData={sortedData}
             initialData={initialData}
+            stopChart={stopChart}
           />
         </ReactPageScroller>
       </React.Fragment>

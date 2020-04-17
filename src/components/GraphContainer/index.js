@@ -1,24 +1,18 @@
-import React, { useEffect, createRef } from 'react';
+import React, { useEffect } from 'react';
 import * as S from './styles';
 import { modifiedChart } from './chart';
 import * as d3 from 'd3';
 import * as d3Require from 'd3-require';
-import { object } from 'prop-types';
+import { object, number } from 'prop-types';
 
-const GraphContainer = ({ initialData }) => {
-  const chartInput = createRef();
-
-  useEffect(
-    () => {
-      const myNode = document.getElementById('chartId');
-      myNode.innerHTML = '';
-      d3Require.require('d3@5');
-
-      const chartData = modifiedChart(initialData, d3.select('.chartData'));
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [initialData]
-  );
+const GraphContainer = ({ initialData, stopChart }) => {
+  useEffect(() => {
+    const myNode = document.getElementById('chartId');
+    myNode.innerHTML = '';
+    d3Require.require('d3@5');
+    // eslint-disable-next-line
+    const chartData = modifiedChart(initialData, d3.select('.chartData'));
+  }, [initialData]);
 
   return (
     <S.Wrapper>
@@ -28,11 +22,13 @@ const GraphContainer = ({ initialData }) => {
 };
 
 GraphContainer.propTypes = {
-  initialData: object
+  initialData: object,
+  stopChart: number
 };
 
 GraphContainer.defaultProps = {
-  initialData: {}
+  initialData: {},
+  stopChart: 0
 };
 
 export default GraphContainer;
