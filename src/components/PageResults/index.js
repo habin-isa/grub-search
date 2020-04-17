@@ -1,9 +1,9 @@
 import React from 'react';
 import * as S from './styles';
 import GraphContainer from '../GraphContainer';
-import { array, number } from 'prop-types';
+import { array, object } from 'prop-types';
 
-const PageResults = ({ venues, renderedVenues, similarVenues, renderedSimilarVenues, stopChart }) => {
+const PageResults = ({ venues, renderedVenues, initialData }) => {
   return (
     <S.Wrapper>
       <S.Venues>
@@ -14,16 +14,14 @@ const PageResults = ({ venues, renderedVenues, similarVenues, renderedSimilarVen
         {' '}
         <S.SimilarVenues>
           <S.SimilarVenuesTitle>Similar venues:</S.SimilarVenuesTitle>
-          <S.Venues>{similarVenues.length === 0 ? 'No results for similar venues' : renderedSimilarVenues}</S.Venues>
           <S.Venues>
-            {similarVenues.length === 1
-              ? 'Only 1 similar venue'
-              : similarVenues.length > 1
-              ? 'Graph powered by d3'
-              : ''}
+            {initialData.firstResponse === undefined
+              ? 'No results for similar venues'
+              : initialData.firstResponse.map((venue, i) => <div key={i}>{venue.id}</div>)}
           </S.Venues>
+          <S.Venues>Graph powered by d3</S.Venues>
         </S.SimilarVenues>{' '}
-        <GraphContainer similarVenues={similarVenues} />
+        <GraphContainer initialData={initialData} />
       </S.Graph>
     </S.Wrapper>
   );
@@ -32,17 +30,13 @@ const PageResults = ({ venues, renderedVenues, similarVenues, renderedSimilarVen
 PageResults.propTypes = {
   venues: array,
   renderedVenues: array,
-  similarVenues: array,
-  renderedSimilarVenues: array,
-  stopChart: number
+  initialData: object
 };
 
 PageResults.defaultProps = {
   venues: [],
   renderedVenues: [],
-  similarVenues: [],
-  renderedSimilarVenues: [],
-  stopChart: 0
+  initialData: {}
 };
 
 export default PageResults;
